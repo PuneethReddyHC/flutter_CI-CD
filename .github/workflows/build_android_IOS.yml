@@ -4,7 +4,7 @@ on:
   push:
     branches: [ master ]
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
 
 jobs:
   build:
@@ -13,7 +13,7 @@ jobs:
     - uses: actions/checkout@v3
     - uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.10.0'
+        flutter-version: '3.10.6'  # Updated to a version that includes Dart SDK 3.0.6
         channel: 'stable'
     - run: flutter pub get
     - run: flutter test
@@ -29,7 +29,7 @@ jobs:
         java-version: '11'
     - uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.10.0'
+        flutter-version: '3.10.6'  # Updated to match the build job
         channel: 'stable'
     - run: flutter pub get
     - name: Decode Android keystore
@@ -55,7 +55,7 @@ jobs:
     - uses: actions/checkout@v3
     - uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.10.0'
+        flutter-version: '3.10.6'  # Updated to match the build job
         channel: 'stable'
     - run: flutter pub get
     - run: flutter build ios --release --no-codesign
@@ -80,8 +80,6 @@ jobs:
   #       track: production
   #       status: completed
 
-  # # For iOS, you would typically use fastlane or a similar tool for deployment
-  # # This step is a placeholder and would need to be customized based on your iOS deployment process
   # deploy_ios:
   #   needs: build_ios
   #   runs-on: macos-latest
