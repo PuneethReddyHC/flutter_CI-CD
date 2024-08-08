@@ -7,7 +7,6 @@ import 'package:boilerplate/utils/locale/app_localization.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:material_dialog/material_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -87,9 +86,10 @@ class _HomeScreenState extends State<HomeScreen> {
   _buildLanguageDialog() {
     _showDialog<String>(
       context: context,
-      child: MaterialDialog(
-        borderRadius: 5.0,
-        enableFullWidth: true,
+      child: AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+        ),
         title: Text(
           AppLocalizations.of(context).translate('home_tv_choose_language'),
           style: TextStyle(
@@ -97,37 +97,43 @@ class _HomeScreenState extends State<HomeScreen> {
             fontSize: 16.0,
           ),
         ),
-        headerColor: Theme.of(context).primaryColor,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        closeButtonColor: Colors.white,
-        enableCloseButton: true,
-        enableBackButton: false,
-        onCloseButtonClicked: () {
-          Navigator.of(context).pop();
-        },
-        children: _languageStore.supportedLanguages
-            .map(
-              (object) => ListTile(
-                dense: true,
-                contentPadding: EdgeInsets.all(0.0),
-                title: Text(
-                  object.language!,
-                  style: TextStyle(
-                    color: _languageStore.locale == object.locale
-                        ? Theme.of(context).primaryColor
-                        : _themeStore.darkMode
-                            ? Colors.white
-                            : Colors.black,
+        actions: <Widget>[
+          TextButton(
+            child: Text(
+              'Close',
+              style: TextStyle(color: Colors.white),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+        content: Column(
+          children: _languageStore.supportedLanguages
+              .map(
+                (object) => ListTile(
+                  dense: true,
+                  contentPadding: EdgeInsets.all(0.0),
+                  title: Text(
+                    object.language!,
+                    style: TextStyle(
+                      color: _languageStore.locale == object.locale
+                          ? Theme.of(context).primaryColor
+                          : _themeStore.darkMode
+                              ? Colors.white
+                              : Colors.black,
+                    ),
                   ),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    // change user language based on selected locale
+                    _languageStore.changeLanguage(object.locale!);
+                  },
                 ),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  // change user language based on selected locale
-                  _languageStore.changeLanguage(object.locale!);
-                },
-              ),
-            )
-            .toList(),
+              )
+              .toList(),
+        ),
       ),
     );
   }
