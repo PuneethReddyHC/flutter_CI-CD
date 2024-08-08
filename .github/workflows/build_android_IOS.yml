@@ -13,7 +13,7 @@ jobs:
     - uses: actions/checkout@v3
     - uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.4.6'  # Updated to a version that includes Dart SDK 3.0.6
+        flutter-version: '3.0.6'  # Updated to a version that includes Dart SDK 3.0.6
         channel: 'stable'
     - run: flutter pub get
     # - run: flutter test
@@ -29,7 +29,7 @@ jobs:
         java-version: '11'
     - uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.4.6'  # Updated to match the build job
+        flutter-version: '3.0.6'  # Updated to match the build job
         channel: 'stable'
     - run: flutter pub get
     - name: Decode Android keystore
@@ -55,7 +55,7 @@ jobs:
     - uses: actions/checkout@v3
     - uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.4.6'  # Updated to match the build job
+        flutter-version: '3.0.6'  # Updated to match the build job
         channel: 'stable'
     - run: flutter pub get
     - run: flutter build ios --release --no-codesign
