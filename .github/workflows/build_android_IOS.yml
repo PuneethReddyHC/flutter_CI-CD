@@ -63,7 +63,7 @@ jobs:
     - uses: actions/checkout@v3
     - uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.10.6' 
+        flutter-version: '3.10.6'
         channel: 'stable'
     - run: flutter pub get
     - run: flutter build ios --release --no-codesign
@@ -74,8 +74,10 @@ jobs:
 
     # Build an IPA (Replace placeholders with your actual values)
     - name: Build iOS IPA
+      working-directory: ios # <-- Add this line!
       run: |
-        flutter build ios --release --no-codesign
+        # The following flutter command is redundant as you already built for iOS above.
+        # flutter build ios --release --no-codesign 
         xcodebuild -workspace Runner.xcworkspace \
                    -scheme Runner \
                    -configuration Release \
@@ -84,7 +86,7 @@ jobs:
                    archive
         xcodebuild -exportArchive \
                    -archivePath build/ios/iphoneos/Runner.xcarchive \
-                   -exportOptionsPlist ios/ExportOptions.plist \
+                   -exportOptionsPlist ExportOptions.plist \ # Path should be relative to 'ios' folder
                    -exportPath build/ios/ipa \
                    -allowProvisioningUpdates
 
