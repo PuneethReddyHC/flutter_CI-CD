@@ -74,26 +74,15 @@ jobs:
 
     # Build an IPA (Replace placeholders with your actual values)
     - name: Build iOS IPA
-      working-directory: ios # <-- Add this line!
       run: |
-        # The following flutter command is redundant as you already built for iOS above.
-        # flutter build ios --release --no-codesign 
-        xcodebuild -workspace Runner.xcworkspace \
-                   -scheme Runner \
-                   -configuration Release \
-                   -archivePath build/ios/iphoneos/Runner.xcarchive \
-                   -destination 'generic/platform=iOS' \
-                   archive
-        xcodebuild -exportArchive \
-                   -archivePath build/ios/iphoneos/Runner.xcarchive \
-                   -exportOptionsPlist ExportOptions.plist \ # Path should be relative to 'ios' folder
-                   -exportPath build/ios/ipa \
-                   -allowProvisioningUpdates
-
+        cd build/ios/iphoneos
+        mkdir Payload
+        cp -r Runner.app Payload
+        zip -r app.ipa Payload
     - uses: actions/upload-artifact@v3
       with:
-        name: release-ipa
-        path: build/ios/ipa
+        name: release-ios
+        path: build/ios/iphoneos/app.ipa
 
   # deploy_android:
   #   needs: build_android
