@@ -67,22 +67,18 @@ jobs:
         channel: 'stable'
     - run: flutter pub get
     - run: flutter build ios --release --no-codesign
-    - uses: actions/upload-artifact@v3
-      with:
-        name: release-ios
-        path: build/ios/iphoneos
-
-    # Build an IPA (Replace placeholders with your actual values)
-    - name: Build iOS IPA
+    - name: Install xcodeproj gem
       run: |
-        cd build/ios/iphoneos
-        mkdir Payload
-        cp -r Runner.app Payload
-        zip -r app.ipa Payload
+        gem install xcodeproj
+    - name: Create IPA
+      run: |
+          cd ios
+          xcodebuild -workspace Runner.xcworkspace -scheme Runner -sdk iphoneos -configuration Release archive -archivePath $PWD/build/Runner.xcarchive
+          xcodebuild -exportArchive -archivePath $PWD/build/Runner.xcarchive -exportOptionsPlist exportOptions.plist -exportPath $PWD/build/ios/ipa
     - uses: actions/upload-artifact@v3
       with:
-        name: release-ios
-        path: build/ios/iphoneos/app.ipa
+          name: release-ipa
+          path: ios/build/ios/ipa/Runner.ipa
 
   # deploy_android:
   #   needs: build_android
