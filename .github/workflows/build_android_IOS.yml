@@ -72,13 +72,13 @@ jobs:
         gem install xcodeproj
     - name: Create IPA
       run: |
-          cd ios
-          xcodebuild -workspace Runner.xcworkspace -scheme Runner -sdk iphoneos -configuration Release archive -archivePath $PWD/build/Runner.xcarchive
-          xcodebuild -exportArchive -archivePath $PWD/build/Runner.xcarchive -exportOptionsPlist exportOptions.plist -exportPath $PWD/build/ios/ipa
+        cd ios
+        xcodebuild -workspace Runner.xcworkspace -scheme Runner -sdk iphoneos -configuration Release archive -archivePath $PWD/build/Runner.xcarchive
+        xcodebuild -exportArchive -archivePath $PWD/build/Runner.xcarchive -exportOptionsPlist exportOptions.plist -exportPath $PWD/build/ios/ipa
     - uses: actions/upload-artifact@v3
       with:
-          name: release-ipa
-          path: ios/build/ios/ipa/Runner.ipa
+        name: release-ipa
+        path: ios/build/ios/ipa/Runner.ipa
 
   # deploy_android:
   #   needs: build_android
