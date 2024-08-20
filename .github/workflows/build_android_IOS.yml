@@ -2,9 +2,9 @@ name: Flutter CI/CD
 
 on:
   push:
-    branches: [ master ]
+    branches: [ flutter_app ]
   pull_request:
-    branches: [ master ]
+    branches: [ flutter_app ]
 
 jobs:
   build:
@@ -60,31 +60,25 @@ jobs:
     needs: build
     runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: subosito/flutter-action@v2
       with:
         flutter-version: '3.10.6'
         channel: 'stable'
     - run: flutter pub get
-    - run: flutter build ios --release --no-codesign
+    - run: flutter build ipa --release --no-codesign
     
-    # Upload the iOS build directory
-    - uses: actions/upload-artifact@v3
+    # Upload the iOS archive
+    - uses: actions/upload-artifact@v4
       with:
         name: release-ios-build
-        path: build/ios/iphoneos
+        path: build/ios/archive/Runner.xcarchive
 
-    # Build an IPA
-    - name: Build iOS IPA
-      run: |
-        cd build/ios/iphoneos
-        mkdir Payload
-        cp -r Runner.app Payload
-        zip -r app.ipa Payload
-    - uses: actions/upload-artifact@v3
+    # Upload the IPA
+    - uses: actions/upload-artifact@v4
       with:
         name: release-ios-ipa
-        path: build/ios/iphoneos/app.ipa
+        path: build/ios/ipa/*.ipa
 
   # deploy_android:
   #   needs: build_android
