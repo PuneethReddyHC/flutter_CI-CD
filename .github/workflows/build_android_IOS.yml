@@ -2,9 +2,9 @@ name: Flutter CI/CD
 
 on:
   push:
-    branches: [ flutter_app ]
+    branches: [ master ]
   pull_request:
-    branches: [ flutter_app ]
+    branches: [ master ]
 
 jobs:
   build:
