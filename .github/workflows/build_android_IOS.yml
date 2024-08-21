@@ -32,6 +32,9 @@ jobs:
           flutter-version: '3.10.6' 
           channel: 'stable'
       - run: flutter pub get
+      - name: Set up Flutter SDK path
+        run: |
+          echo "flutter.sdk=$FLUTTER_HOME" > android/local.properties
       # - name: Decode Android keystore
       #   run: |
       #     echo "${{ secrets.SIGNING_KEY }}" | base64 -d > android/app/keystore.jks
